@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, afterNextRender, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,12 +10,15 @@ import { RouterModule } from '@angular/router';
   styleUrl: './home.css'
 })
 export class Home {
-  // Estado de las notificaciones
-  notificationPermission: string = 'default';
-  notificationSupported: boolean = false;
+  // Usar signals para mejor reactividad con zoneless change detection
+  notificationPermission = signal<string>('default');
+  notificationSupported = signal<boolean>(false);
   private isBrowser: boolean = false;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cdr: ChangeDetectorRef
+  ) {
     // Verificar si estamos en el navegador
     this.isBrowser = isPlatformBrowser(this.platformId);
     
@@ -37,12 +40,15 @@ export class Home {
     
     // Verificar soporte de notificaciones
     if ('Notification' in window) {
-      this.notificationSupported = true;
+      this.notificationSupported.set(true);
       // Usar window.Notification para evitar problemas de tipos
-      this.notificationPermission = (window as any).Notification.permission;
+      this.notificationPermission.set((window as any).Notification.permission);
     } else {
-      this.notificationSupported = false;
+      this.notificationSupported.set(false);
     }
+    
+    // Forzar detección de cambios después de inicializar
+    this.cdr.detectChanges();
   }
 
   /**
@@ -54,7 +60,7 @@ export class Home {
       return;
     }
 
-    if (!this.notificationSupported) {
+    if (!this.notificationSupported()) {
       alert('Tu navegador no soporta notificaciones de escritorio');
       return;
     }
@@ -63,7 +69,10 @@ export class Home {
       // Usar window.Notification para evitar problemas de tipos
       const NotificationAPI = (window as any).Notification;
       const permission = await NotificationAPI.requestPermission();
-      this.notificationPermission = permission;
+      this.notificationPermission.set(permission);
+      
+      // Forzar detección de cambios
+      this.cdr.detectChanges();
       
       if (permission === 'granted') {
         // Mostrar notificación de éxito
@@ -86,12 +95,12 @@ export class Home {
       return;
     }
 
-    if (!this.notificationSupported) {
+    if (!this.notificationSupported()) {
       alert('Tu navegador no soporta notificaciones');
       return;
     }
 
-    if (this.notificationPermission === 'granted') {
+    if (this.notificationPermission() === 'granted') {
       try {
         // Usar window.Notification y opciones básicas sin vibrate
         const NotificationAPI = (window as any).Notification;
@@ -118,7 +127,7 @@ export class Home {
         alert('Error al crear la notificación');
       }
       
-    } else if (this.notificationPermission === 'denied') {
+    } else if (this.notificationPermission() === 'denied') {
       alert('⛔ Las notificaciones están bloqueadas. Por favor, habilítalas en la configuración del navegador.');
     } else {
       alert('⚠️ Primero debes permitir las notificaciones haciendo clic en el botón "Permitir notificaciones"');
@@ -129,7 +138,7 @@ export class Home {
    * Muestra una notificación de éxito
    */
   private showSuccessNotification(): void {
-    if (!this.isBrowser || this.notificationPermission !== 'granted') {
+    if (!this.isBrowser || this.notificationPermission() !== 'granted') {
       return;
     }
     
@@ -150,13 +159,13 @@ export class Home {
    * Verifica si las notificaciones están habilitadas
    */
   get notificationsEnabled(): boolean {
-    return this.notificationPermission === 'granted';
+    return this.notificationPermission() === 'granted';
   }
 
   /**
    * Verifica si las notificaciones están bloqueadas
    */
   get notificationsBlocked(): boolean {
-    return this.notificationPermission === 'denied';
+    return this.notificationPermission() === 'denied';
   }
 }
