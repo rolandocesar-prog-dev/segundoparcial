@@ -38,11 +38,13 @@ Cómo probar offline:
 
 Construir en producción:
 
-bashng build --configuration=production
+bash
+ng build --configuration=production
 
 Servir la aplicación:
 
-bashnpx http-server -p 8080 -c-1 dist/segundoparcial/browser
+bash
+npx http-server -p 8080 -c-1 dist/segundoparcial/browser
 
 Verificar en Chrome DevTools:
 
