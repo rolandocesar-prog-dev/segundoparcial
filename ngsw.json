@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1758555716171,
+  "timestamp": 1758562657539,
   "index": "/segundoparcial/index.csr.html",
   "assetGroups": [
     {
@@ -83,8 +83,8 @@
     "/segundoparcial/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/segundoparcial/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/segundoparcial/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/segundoparcial/index.csr.html": "31a957d8159eb4f2516037fcbd6a72d543d7f241",
-    "/segundoparcial/index.html": "d816a3379e93bd94524fdb8a2598a92b67fb9113",
+    "/segundoparcial/index.csr.html": "f75882d6edf7e0869cf38752436a2809cb800ec0",
+    "/segundoparcial/index.html": "231b95fc7137a1f163e64a6317bd87d04faea2aa",
     "/segundoparcial/main-YEPEUCFU.js": "af721270726efda6319f577d55662994736ca6a5",
     "/segundoparcial/manifest.webmanifest": "deb32c289aead5b12b9baf378e71bd5f9c336ac7",
     "/segundoparcial/media/bg-masthead-F66EQKJR.jpg": "2dd96931bb61b41b4fef33c9370c956cc4bc1908",
