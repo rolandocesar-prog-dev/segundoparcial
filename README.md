@@ -14,3 +14,14 @@
    ### Desarrollo:
 ```bash
    ng serve
+
+   ### Template utilizado:
+   **Creative** - Start Bootstrap
+   - **Fuente:** https://startbootstrap.com/theme/creative
+   - **Licencia:** MIT License
+   - **Autor:** Start Bootstrap
+   - **Descripción:** Template one-page responsive con diseño creativo
+   
+   #### Licencia del Template:
+   Copyright (c) 2013-2024 Start Bootstrap
+   Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
