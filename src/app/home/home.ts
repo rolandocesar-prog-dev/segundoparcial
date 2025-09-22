@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -13,16 +13,30 @@ export class Home {
   // Estado de las notificaciones
   notificationPermission: string = 'default';
   notificationSupported: boolean = false;
+  private isBrowser: boolean;
 
-  constructor() {
-    // Verificar si el navegador soporta notificaciones
-    this.checkNotificationSupport();
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    // Verificar si estamos en el navegador
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    
+    // Usar afterNextRender para código del navegador en Angular 20
+    if (this.isBrowser) {
+      afterNextRender(() => {
+        this.checkNotificationSupport();
+      });
+    }
   }
 
   /**
    * Verifica si el navegador soporta la API de Notificaciones
    */
   private checkNotificationSupport(): void {
+    // Solo ejecutar en el navegador
+    if (!this.isBrowser) {
+      this.notificationSupported = false;
+      return;
+    }
+    
     if ('Notification' in window) {
       this.notificationSupported = true;
       this.notificationPermission = (window as any).Notification.permission;
@@ -36,6 +50,10 @@ export class Home {
    * Solicita permiso al usuario para mostrar notificaciones
    */
   async requestNotificationPermission(): Promise<void> {
+    if (!this.isBrowser) {
+      return;
+    }
+
     if (!this.notificationSupported) {
       alert('Tu navegador no soporta notificaciones');
       return;
@@ -64,6 +82,10 @@ export class Home {
    * Muestra una notificación de prueba
    */
   showTestNotification(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
     if (!this.notificationSupported) {
       alert('Tu navegador no soporta notificaciones');
       return;
@@ -112,6 +134,11 @@ export class Home {
    * Muestra un mensaje de éxito como notificación
    */
   private showSuccessMessage(message: string): void {
+    // Solo ejecutar en el navegador
+    if (!this.isBrowser) {
+      return;
+    }
+    
     if (this.notificationPermission === 'granted') {
       new (window as any).Notification('Éxito ✅', {
         body: message,
