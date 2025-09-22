@@ -13,7 +13,7 @@ export class Home {
   // Estado de las notificaciones
   notificationPermission: string = 'default';
   notificationSupported: boolean = false;
-  private isBrowser: boolean;
+  private isBrowser: boolean = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     // Verificar si estamos en el navegador
@@ -22,26 +22,25 @@ export class Home {
     // Usar afterNextRender para código del navegador en Angular 20
     if (this.isBrowser) {
       afterNextRender(() => {
-        this.checkNotificationSupport();
+        this.initializeNotifications();
       });
     }
   }
 
   /**
-   * Verifica si el navegador soporta la API de Notificaciones
+   * Inicializa el soporte de notificaciones
    */
-  private checkNotificationSupport(): void {
-    // Solo ejecutar en el navegador
+  private initializeNotifications(): void {
     if (!this.isBrowser) {
-      this.notificationSupported = false;
       return;
     }
     
+    // Verificar soporte de notificaciones
     if ('Notification' in window) {
       this.notificationSupported = true;
+      // Usar window.Notification para evitar problemas de tipos
       this.notificationPermission = (window as any).Notification.permission;
     } else {
-      console.warn('Este navegador no soporta notificaciones de escritorio');
       this.notificationSupported = false;
     }
   }
@@ -50,31 +49,31 @@ export class Home {
    * Solicita permiso al usuario para mostrar notificaciones
    */
   async requestNotificationPermission(): Promise<void> {
+    // Verificaciones de seguridad
     if (!this.isBrowser) {
       return;
     }
 
     if (!this.notificationSupported) {
-      alert('Tu navegador no soporta notificaciones');
+      alert('Tu navegador no soporta notificaciones de escritorio');
       return;
     }
 
     try {
-      const permission = await (window as any).Notification.requestPermission();
+      // Usar window.Notification para evitar problemas de tipos
+      const NotificationAPI = (window as any).Notification;
+      const permission = await NotificationAPI.requestPermission();
       this.notificationPermission = permission;
       
       if (permission === 'granted') {
-        console.log('Permiso de notificaciones concedido');
-        this.showSuccessMessage('¡Notificaciones habilitadas!');
+        // Mostrar notificación de éxito
+        this.showSuccessNotification();
       } else if (permission === 'denied') {
-        console.log('Permiso de notificaciones denegado');
-        alert('Has denegado el permiso para las notificaciones. Puedes cambiarlo en la configuración del navegador.');
-      } else {
-        console.log('Permiso de notificaciones no decidido');
+        alert('Has denegado el permiso para las notificaciones. Para habilitarlas, debes cambiar la configuración del navegador.');
       }
     } catch (error) {
-      console.error('Error al solicitar permiso de notificaciones:', error);
-      alert('Ocurrió un error al solicitar permisos de notificación');
+      console.error('Error al solicitar permiso:', error);
+      alert('Error al solicitar permiso de notificaciones');
     }
   }
 
@@ -82,6 +81,7 @@ export class Home {
    * Muestra una notificación de prueba
    */
   showTestNotification(): void {
+    // Verificaciones de seguridad
     if (!this.isBrowser) {
       return;
     }
@@ -92,59 +92,57 @@ export class Home {
     }
 
     if (this.notificationPermission === 'granted') {
-      // Crear y mostrar la notificación
-      const notificationOptions: any = {
-        body: 'Esta es una notificación de prueba desde tu aplicación Angular PWA',
-        icon: '/favicon.ico',
-        badge: '/favicon.ico',
-        tag: 'test-notification',
-        requireInteraction: false,
-        data: {
-          dateOfArrival: Date.now(),
-          primaryKey: 1
-        }
-      };
+      try {
+        // Usar window.Notification y opciones básicas sin vibrate
+        const NotificationAPI = (window as any).Notification;
+        const notification = new NotificationAPI('🎉 ¡Notificación de Prueba!', {
+          body: 'Esta es una notificación de prueba desde tu aplicación Angular PWA',
+          icon: '/favicon.ico',
+          badge: '/favicon.ico',
+          tag: 'test-notification',
+          requireInteraction: false
+        });
+
+        // Eventos de la notificación
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+
+        notification.onerror = (error: any) => {
+          console.error('Error en la notificación:', error);
+        };
+        
+      } catch (error) {
+        console.error('Error al crear notificación:', error);
+        alert('Error al crear la notificación');
+      }
       
-      const notification = new (window as any).Notification('¡Notificación de prueba! 🎉', notificationOptions);
-
-      // Manejar eventos de la notificación
-      notification.onclick = () => {
-        console.log('Notificación clickeada');
-        window.focus();
-        notification.close();
-      };
-
-      notification.onclose = () => {
-        console.log('Notificación cerrada');
-      };
-
-      notification.onerror = (error: any) => {
-        console.error('Error en la notificación:', error);
-      };
-
     } else if (this.notificationPermission === 'denied') {
-      alert('Las notificaciones están bloqueadas. Por favor, habilítalas en la configuración del navegador.');
+      alert('⛔ Las notificaciones están bloqueadas. Por favor, habilítalas en la configuración del navegador.');
     } else {
-      // Si el permiso es 'default', solicitar permiso primero
-      alert('Primero debes permitir las notificaciones haciendo clic en el botón "Permitir notificaciones"');
+      alert('⚠️ Primero debes permitir las notificaciones haciendo clic en el botón "Permitir notificaciones"');
     }
   }
 
   /**
-   * Muestra un mensaje de éxito como notificación
+   * Muestra una notificación de éxito
    */
-  private showSuccessMessage(message: string): void {
-    // Solo ejecutar en el navegador
-    if (!this.isBrowser) {
+  private showSuccessNotification(): void {
+    if (!this.isBrowser || this.notificationPermission !== 'granted') {
       return;
     }
     
-    if (this.notificationPermission === 'granted') {
-      new (window as any).Notification('Éxito ✅', {
-        body: message,
+    try {
+      const NotificationAPI = (window as any).Notification;
+      new NotificationAPI('✅ ¡Éxito!', {
+        body: '¡Las notificaciones han sido habilitadas correctamente!',
         icon: '/favicon.ico',
+        badge: '/favicon.ico',
         tag: 'success-notification'
       });
+    } catch (error) {
+      console.error('Error al mostrar notificación de éxito:', error);
     }
   }
 

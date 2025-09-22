@@ -90,10 +90,10 @@
                 <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
                     <!-- Botón Permitir Notificaciones -->
                     <button 
+                        type="button"
                         class="btn btn-success btn-lg px-4 py-3"
                         (click)="requestNotificationPermission()"
-                        [disabled]="!notificationSupported || notificationsEnabled"
-                        [class.disabled]="!notificationSupported || notificationsEnabled">
+                        [disabled]="!notificationSupported || notificationsEnabled">
                         <i class="bi bi-bell-fill me-2"></i>
                         @if (notificationsEnabled) {
                             ✅ Notificaciones Habilitadas
@@ -104,10 +104,10 @@
                     
                     <!-- Botón Probar Notificación -->
                     <button 
+                        type="button"
                         class="btn btn-primary btn-lg px-4 py-3"
                         (click)="showTestNotification()"
-                        [disabled]="!notificationSupported"
-                        [class.disabled]="!notificationSupported">
+                        [disabled]="!notificationSupported">
                         <i class="bi bi-send-fill me-2"></i>
                         Probar notificación
                     </button>
