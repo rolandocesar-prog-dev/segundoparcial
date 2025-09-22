@@ -21,38 +21,38 @@
         <h2 class="h3 mb-4">Grid de Cards</h2>
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
+                <div class="card h-100" role="article" aria-label="Tarjeta de componente de demostración 1">
                     <div class="card-body text-center">
                         <div class="text-primary mb-3">
-                            <i class="bi bi-gem fs-1">💎</i>
+                            <i class="bi bi-gem fs-1" role="img" aria-label="Icono de diamante">💎</i>
                         </div>
                         <h5 class="card-title">Componente 1</h5>
                         <p class="card-text">Ejemplo de card responsive con Bootstrap. Se adapta a diferentes tamaños de pantalla.</p>
-                        <button class="btn btn-primary">Ver más</button>
+                        <button class="btn btn-primary" aria-label="Ver más sobre Componente 1">Ver más</button>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
+                <div class="card h-100" role="article" aria-label="Tarjeta de componente de demostración 2">
                     <div class="card-body text-center">
                         <div class="text-primary mb-3">
-                            <i class="bi bi-laptop fs-1">💻</i>
+                            <i class="bi bi-laptop fs-1" role="img" aria-label="Icono de laptop">💻</i>
                         </div>
                         <h5 class="card-title">Componente 2</h5>
                         <p class="card-text">Segunda tarjeta del grid responsive. Demuestra la flexibilidad del sistema de columnas.</p>
-                        <button class="btn btn-primary">Ver más</button>
+                        <button class="btn btn-primary" aria-label="Ver más sobre Componente 2">Ver más</button>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
+                <div class="card h-100" role="article" aria-label="Tarjeta de componente de demostración 3">
                     <div class="card-body text-center">
                         <div class="text-primary mb-3">
-                            <i class="bi bi-heart fs-1">❤️</i>
+                            <i class="bi bi-heart fs-1" role="img" aria-label="Icono de corazón">❤️</i>
                         </div>
                         <h5 class="card-title">Componente 3</h5>
                         <p class="card-text">Tercera tarjeta que completa nuestro grid de demostración responsive.</p>
-                        <button class="btn btn-primary">Ver más</button>
+                        <button class="btn btn-primary" aria-label="Ver más sobre Componente 3">Ver más</button>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
             <div class="container">
                 <a class="navbar-brand" href="#">Demo Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDemo">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDemo" aria-label="Alternar navegación">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarDemo">
@@ -81,6 +81,8 @@
 
     <!-- Enlace de regreso -->
     <div class="text-center">
-        <a routerLink="/" class="btn btn-outline-primary btn-lg">🏠 Volver al Inicio</a>
+        <a routerLink="/" class="btn btn-outline-primary btn-lg" aria-label="Volver a la página de inicio">
+            <span role="img" aria-label="Casa">🏠</span> Volver al Inicio
+        </a>
     </div>
 </div>
