@@ -3,7 +3,6 @@ import { UiComponent } from './ui/ui';
 
 export const routes: Routes = [
   { path: 'ui', component: UiComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },  // ← Cambiado
-  { path: 'home', redirectTo: '', pathMatch: 'full' },   // ← Agregado
+  { path: '', pathMatch: 'full', redirectTo: '' }, // ← Sin redirección circular
   { path: '**', redirectTo: '' }
 ];
