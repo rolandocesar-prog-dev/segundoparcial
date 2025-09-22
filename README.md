@@ -25,3 +25,33 @@
    #### Licencia del Template:
    Copyright (c) 2013-2024 Start Bootstrap
    Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+
+8. Funcionalidad Offline (PWA)
+La aplicación está configurada como PWA con Service Worker habilitado para funcionar completamente offline.
+Recursos pre-cacheados:
+
+Todos los archivos HTML, CSS y JavaScript de la aplicación
+Imágenes y assets del template Bootstrap Creative
+Recursos externos: Bootstrap CDN, Google Fonts, Bootstrap Icons
+
+Cómo probar offline:
+
+Construir en producción:
+
+bashng build --configuration=production
+
+Servir la aplicación:
+
+bashnpx http-server -p 8080 -c-1 dist/segundoparcial/browser
+
+Verificar en Chrome DevTools:
+
+Abrir la aplicación en http://localhost:8080
+F12 → Application → Service Workers
+Activar checkbox "Offline"
+Recargar la página (F5)
+
+
+
+Resultado:
+✅ La página Home y la navegación a /ui funcionan completamente sin conexión a internet.

@@ -18,13 +18,57 @@
     },
     {
       "name": "assets",
-      "installMode": "lazy",
+      "installMode": "prefetch",
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/assets/**",
+          "/**/*.svg",
+          "/**/*.cur",
+          "/**/*.jpg",
+          "/**/*.jpeg",
+          "/**/*.png",
+          "/**/*.apng",
+          "/**/*.webp",
+          "/**/*.avif",
+          "/**/*.gif",
+          "/**/*.otf",
+          "/**/*.ttf",
+          "/**/*.woff",
+          "/**/*.woff2"
+        ]
+      }
+    },
+    {
+      "name": "external-resources",
+      "installMode": "prefetch",
+      "resources": {
+        "urls": [
+          "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js",
+          "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css",
+          "https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700",
+          "https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic",
+          "https://fonts.gstatic.com/**"
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-cache",
+      "urls": ["/api/**"],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "1d",
+        "timeout": "10s",
+        "strategy": "freshness"
+      }
+    }
+  ],
+  "navigationUrls": [
+    "/**",
+    "!/**/*.*",
+    "!/**/*__*",
+    "!/**/*__*/**"
   ]
 }
