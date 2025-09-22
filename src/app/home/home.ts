@@ -105,12 +105,12 @@ export class Home {
         // Usar window.Notification y opciones básicas sin vibrate
         const NotificationAPI = (window as any).Notification;
         const notification = new NotificationAPI('🎉 ¡Notificación de Prueba!', {
-          body: 'Esta es una notificación de prueba desde tu aplicación Angular PWA',
-          icon: '/favicon.ico',
-          badge: '/favicon.ico',
-          tag: 'test-notification',
-          requireInteraction: false
-        });
+    body: 'Esta es una notificación de prueba desde tu aplicación Angular PWA',
+    icon: 'assets/icons/icon-192x192.png',  // Sin / al inicio
+    badge: 'assets/icons/icon-96x96.png',   // Sin / al inicio
+    tag: 'test-notification',
+    requireInteraction: false
+});
 
         // Eventos de la notificación
         notification.onclick = () => {
